@@ -5,7 +5,7 @@ import org.jetbrains.utils.Constants;
 public abstract class Car {
     protected double location;
     private final Energy energy;
-    private final double energyUsageRate;
+    public final double energyUsageRate;
     protected double energyThreshold;
 
     public Car(double location, double energyUsageRate) {
@@ -19,20 +19,20 @@ public abstract class Car {
     }
 
     public boolean needsEnergy(double destination) {
-        double distance = Math.abs(destination - this.location);
+        double distance = Math.abs(destination - location);
         double estimatedUsage = distance * energyUsageRate;
-        return (this.energy.getEnergy() - estimatedUsage <= this.energyThreshold);
+        return (energy.getEnergy() - estimatedUsage <= energyThreshold);
     }
 
     public void driveTo(double destination) {
-        double distance = Math.abs(destination - this.location);
-        this.energy.reduceEnergy(distance * energyUsageRate);
-        this.location = destination;
+        double distance = Math.abs(destination - location);
+        energy.reduceEnergy(distance * energyUsageRate);
+        location = destination;
     }
 
     public void refuel() {
         System.out.println("Refueling");
-        this.energy.recharge();
+        energy.recharge();
     }
 
     public double getLocation() {
@@ -40,7 +40,7 @@ public abstract class Car {
     }
 
     public double getEnergyValue() {
-        return (this.energy.getEnergy());
+        return (energy.getEnergy());
     }
 
     protected static class Energy {
@@ -53,7 +53,7 @@ public abstract class Car {
         public void reduceEnergy(double value) {
             energy -= value;
             if(energy < 0) {
-                throw new OutOfEnergyException(energy);
+                throw new IllegalStateException("Energy value is " + Double.valueOf(energy).toString() + ", which is below 0");
             }
         }
 

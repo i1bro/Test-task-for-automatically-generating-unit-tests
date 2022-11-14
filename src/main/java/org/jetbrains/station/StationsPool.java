@@ -1,10 +1,16 @@
 package org.jetbrains.station;
 
 import org.jetbrains.car.Car;
+import org.jetbrains.car.ElectricCar;
 import org.jetbrains.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static java.util.Collections.binarySearch;
+import static java.util.Collections.sort;
 
 public class StationsPool {
     private static StationsPool stations;
@@ -27,6 +33,7 @@ public class StationsPool {
         gasStations.add(new GasStation(77));
         gasStations.add(new GasStation(89));
         gasStations.add(new GasStation(97));
+        gasStations.sort(Comparator.comparingDouble(Station::getLocation));
         // Add charging stations
         chargingStations.add(new ChargingStation(15));
         chargingStations.add(new ChargingStation(35));
@@ -35,14 +42,15 @@ public class StationsPool {
         chargingStations.add(new ChargingStation(70));
         chargingStations.add(new ChargingStation(86));
         chargingStations.add(new ChargingStation(96));
+        chargingStations.sort(Comparator.comparingDouble(Station::getLocation));
     }
 
     public ChargingStation getClosestChargingStation(Car car) {
-        return (ChargingStation) getClosestStation(car, this.chargingStations);
+        return (ChargingStation) getClosestStation(car, chargingStations);
     }
 
     public GasStation getClosestGasStation(Car car) {
-        return (GasStation) getClosestStation(car, this.gasStations);
+        return (GasStation) getClosestStation(car, gasStations);
     }
 
     private Station getClosestStation(Car car, List<Station> stations) {
@@ -57,4 +65,16 @@ public class StationsPool {
         }
         return closestChargingStation;
     }
+
+    public List<Station> getCompatibleStations(Car car) {
+        List<Station> compatibleStations;
+        if(car instanceof ElectricCar) {
+            compatibleStations = chargingStations;
+        } else {
+            compatibleStations = gasStations;
+        }
+        return Collections.unmodifiableList(compatibleStations);
+    }
+
+
 }
