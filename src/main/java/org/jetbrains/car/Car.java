@@ -27,7 +27,7 @@ public abstract class Car {
     }
 
     public void driveTo(double destination){
-        double distance = destination-this.location;
+        double distance = Math.abs(destination-this.location);
         this.energy.reduceEnergy(distance*energyUsageRate);
         this.location = destination;
     }
@@ -54,10 +54,11 @@ public abstract class Car {
 
         public void reduceEnergy(double value){
             energy-=value;
+            // TODO: Not sure what to do if energy drops below 0 here.
         }
 
         public double getEnergy() {
-            return energy++;
+            return energy;
         }
 
         public void recharge(){
