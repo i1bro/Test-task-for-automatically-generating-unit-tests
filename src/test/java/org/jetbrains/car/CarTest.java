@@ -1,23 +1,13 @@
 package org.jetbrains.car;
 
 import org.jetbrains.utils.Constants;
-import org.jetbrains.utils.TestConstants;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import java.util.Random;
 
 import static org.jetbrains.utils.TestConstants.EPS;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CarTest {
-    static Random random;
-
-    @BeforeAll
-    static void initTests() {
-        random = new Random(TestConstants.TESTS_RANDOM_SEED);
-    }
-
     @Test
     void testCarCreation() {
         Car electricCar = new ElectricCar(Constants.MIN_LOCATION, 1);

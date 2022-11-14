@@ -23,10 +23,7 @@ public class Person {
         this.homeLocation = homeLocation;
         this.workLocation = workLocation;
 
-        if (car == null) {
-            throw new IllegalArgumentException("Car is empty");
-        }
-        this.car = car;
+        changeCar(car);
     }
 
     public void goToWork() {
@@ -100,6 +97,9 @@ public class Person {
             System.out.println("Can't drive to this location. Energy usage rate is too high.");
             return;
         }
+        if(!tripPlan.isEmpty()) {
+            System.out.println("Needs energy");
+        }
         for(var stationLocation: tripPlan) {
             addEnergy(stationLocation);
         }
@@ -113,7 +113,6 @@ public class Person {
     }
 
     private void addEnergy(double destination) {
-        System.out.println("Needs energy");
         System.out.println("Drive to " +
                 destination +
                 ". Current location " +
@@ -125,6 +124,9 @@ public class Person {
     }
 
     public void changeCar(Car car) {
+        if (car == null) {
+            throw new IllegalArgumentException("Car is empty");
+        }
         this.car = car;
     }
 }
