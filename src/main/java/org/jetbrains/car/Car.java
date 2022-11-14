@@ -1,19 +1,17 @@
 package org.jetbrains.car;
 
+import org.jetbrains.utils.Constants;
+
 public abstract class Car {
-
     protected double location;
-    private Energy energy;
-
-    private double energyUsageRate;
-
-    protected int energyThreshold;
-
+    private final Energy energy;
+    private final double energyUsageRate;
+    protected double energyThreshold;
 
     public Car(double location, double energyUsageRate) {
         this.location = location;
 
-        if(energyUsageRate <= 0){
+        if (energyUsageRate <= 0) {
             throw new IllegalArgumentException("energy usage rate should be higher than 0.");
         }
         this.energyUsageRate = energyUsageRate;
@@ -21,14 +19,14 @@ public abstract class Car {
     }
 
     public boolean needsEnergy(double destination) {
-        double distance = Math.abs(destination-this.location);
+        double distance = Math.abs(destination - this.location);
         double estimatedUsage = distance * energyUsageRate;
         return (this.energy.getEnergy() - estimatedUsage <= this.energyThreshold);
     }
 
-    public void driveTo(double destination){
-        double distance = Math.abs(destination-this.location);
-        this.energy.reduceEnergy(distance*energyUsageRate);
+    public void driveTo(double destination) {
+        double distance = Math.abs(destination - this.location);
+        this.energy.reduceEnergy(distance * energyUsageRate);
         this.location = destination;
     }
 
@@ -45,24 +43,26 @@ public abstract class Car {
         return (this.energy.getEnergy());
     }
 
-    protected class Energy{
+    protected static class Energy {
         private double energy;
 
         public Energy() {
-            energy = 100;
+            energy = Constants.MAX_ENERGY;
         }
 
-        public void reduceEnergy(double value){
-            energy-=value;
-            // TODO: Not sure what to do if energy drops below 0 here.
+        public void reduceEnergy(double value) {
+            energy -= value;
+            if(energy < 0) {
+                throw new OutOfEnergyException(energy);
+            }
         }
 
         public double getEnergy() {
             return energy;
         }
 
-        public void recharge(){
-            energy = 100;
+        public void recharge() {
+            energy = Constants.MAX_ENERGY;
         }
     }
 }

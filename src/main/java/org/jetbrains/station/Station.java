@@ -1,11 +1,9 @@
 package org.jetbrains.station;
 
 public abstract class Station {
-    private int id;
-    private double location;
+    private final double location;
 
-    public Station(int id, int location) {
-        this.id = id;
+    public Station(int location) {
         this.location = location;
     }
 

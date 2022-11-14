@@ -1,10 +1,10 @@
 package org.jetbrains.car;
 
-public class ElectricCar extends Car{
+import org.jetbrains.utils.Constants;
 
+public class ElectricCar extends Car {
     public ElectricCar(double location, double energyUsageRate) {
-        super(location,energyUsageRate);
-        energyThreshold=40;
+        super(location, energyUsageRate);
+        energyThreshold = Constants.ELECTRIC_CAR_ENERGY_THRESHOLD;
     }
-
 }
